@@ -401,6 +401,7 @@ interface Array<T> { length: number; [n: number]: T; }`
                 defaultWatchFileKind: () => this.defaultWatchFileKind?.(),
                 inodeWatching: !!this.inodeWatching,
                 sysLog: s => this.write(s + this.newLine),
+                getSystem: () => this,
             });
             this.watchFile = watchFile;
             this.watchDirectory = watchDirectory;
