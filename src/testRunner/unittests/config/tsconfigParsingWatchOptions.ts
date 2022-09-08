@@ -210,6 +210,26 @@ namespace ts {
                         }
                     ]
                 },
+                {
+                    json: { watchOptions: { watchFactory: "somefactory" } },
+                    expectedOptions: { watchFactory: "somefactory" }
+                },
+                {
+                    json: { watchOptions: { watchFactory: "somefactory/../malicious" } },
+                    expectedOptions: { watchFactory: undefined },
+                    expectedErrors: sourceFile => [
+                        {
+                            messageText: `'watchFactory' cannot specify anything but package name.`,
+                            category: Diagnostics.watchFactory_cannot_specify_anything_but_package_name.category,
+                            code: Diagnostics.watchFactory_cannot_specify_anything_but_package_name.code,
+                            file: sourceFile,
+                            start: sourceFile && sourceFile.text.indexOf(`"somefactory/../malicious"`),
+                            length: sourceFile && `"somefactory/../malicious"`.length,
+                            reportsDeprecated: undefined,
+                            reportsUnnecessary: undefined
+                        }
+                    ]
+                },
             ]);
         });
 

@@ -739,6 +739,35 @@ namespace ts {
                         watchOptions: { excludeFiles: [] }
                     });
             });
+
+            it("parse --watchFactory", () => {
+                assertParseResult(["--watchFactory", "somefactory", "0.ts"],
+                    {
+                        errors: [],
+                        fileNames: ["0.ts"],
+                        options: {},
+                        watchOptions: { watchFactory: "somefactory" }
+                    });
+            });
+
+            it("errors on invalid watchFactory", () => {
+                assertParseResult(["--watchFactory", "somefactory/../malicious", "0.ts"],
+                    {
+                        errors: [
+                            {
+                                messageText: `'watchFactory' cannot specify anything but package name.`,
+                                category: Diagnostics.watchFactory_cannot_specify_anything_but_package_name.category,
+                                code: Diagnostics.watchFactory_cannot_specify_anything_but_package_name.code,
+                                file: undefined,
+                                start: undefined,
+                                length: undefined
+                            }
+                        ],
+                        fileNames: ["0.ts"],
+                        options: {},
+                        watchOptions: { watchFactory: undefined }
+                    });
+            });
         });
     });
 
@@ -1052,6 +1081,35 @@ namespace ts {
                         projects: ["."],
                         buildOptions: {},
                         watchOptions: { excludeFiles: [] }
+                    });
+            });
+
+            it("parse --watchFactory", () => {
+                assertParseResult(["--watchFactory", "somefactory"],
+                    {
+                        errors: [],
+                        projects: ["."],
+                        buildOptions: {},
+                        watchOptions: { watchFactory: "somefactory" }
+                    });
+            });
+
+            it("errors on invalid watchFactory", () => {
+                assertParseResult(["--watchFactory", "somefactory/../malicious"],
+                    {
+                        errors: [
+                            {
+                                messageText: `'watchFactory' cannot specify anything but package name.`,
+                                category: Diagnostics.watchFactory_cannot_specify_anything_but_package_name.category,
+                                code: Diagnostics.watchFactory_cannot_specify_anything_but_package_name.code,
+                                file: undefined,
+                                start: undefined,
+                                length: undefined
+                            }
+                        ],
+                        projects: ["."],
+                        buildOptions: {},
+                        watchOptions: { watchFactory: undefined }
                     });
             });
         });

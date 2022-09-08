@@ -1584,6 +1584,7 @@ namespace ts.server.protocol {
         synchronousWatchDirectory?: boolean;
         excludeDirectories?: string[];
         excludeFiles?: string[];
+        watchFactory?: string;
         [option: string]: CompilerOptionsValue | undefined;
     }
 

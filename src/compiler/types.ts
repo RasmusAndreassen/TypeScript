@@ -6676,6 +6676,7 @@ namespace ts {
         synchronousWatchDirectory?: boolean;
         excludeDirectories?: string[];
         excludeFiles?: string[];
+        watchFactory?: string;
 
         [option: string]: CompilerOptionsValue | undefined;
     }
