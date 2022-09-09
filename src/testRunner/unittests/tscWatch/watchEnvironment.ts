@@ -805,6 +805,30 @@ namespace ts.tscWatch {
                     system.require = (_initialPath, moduleName) => {
                         assert.equal(moduleName, "myplugin");
                         return {
+                            module: () => ({ watchDirectory: system.factoryData.watchDirectory }),
+                            error: undefined
+                        };
+                    };
+                    return system;
+                },
+                changes: [
+                    {
+                        caption: "Change file",
+                        change: sys => sys.appendFile(`${projectRoot}/b.ts`, "export function foo() { }"),
+                        timeouts: sys => sys.runQueuedTimeoutCallbacks(),
+                    },
+                ]
+            });
+
+            verifyTscWatch({
+                scenario,
+                subScenario: `watchFactory/when plugin doesnt return factory function`,
+                commandLineArgs: ["-w", "--extendedDiagnostics"],
+                sys: () => {
+                    const system = createSystem({ watchFactory: "myplugin" });
+                    system.require = (_initialPath, moduleName) => {
+                        assert.equal(moduleName, "myplugin");
+                        return {
                             module: { watchDirectory: system.factoryData.watchDirectory },
                             error: undefined
                         };
@@ -902,10 +926,10 @@ namespace ts.tscWatch {
                 system.require = (_initialPath, moduleName) => {
                     assert.equal(moduleName, "myplugin");
                     return {
-                        module: {
+                        module: () => ({
                             watchFile: system.factoryData.watchFile,
                             watchDirectory: system.factoryData.watchDirectory,
-                        },
+                        }),
                         error: undefined
                     };
                 };
