@@ -356,6 +356,7 @@ interface Array<T> { length: number; [n: number]: T; }`
         private inodeWatching: boolean | undefined;
         private readonly inodes?: ESMap<Path, number>;
         watchDirectory: HostWatchDirectory;
+        onPluginConfigurationChanged: (pluginName: string, config: any) => void;
         constructor(
             fileOrFolderorSymLinkList: FileOrFolderOrSymLinkMap | readonly FileOrFolderOrSymLink[],
             {
@@ -381,7 +382,7 @@ interface Array<T> { length: number; [n: number]: T; }`
                 this.inodes = new Map();
             }
 
-            const { watchFile, watchDirectory } = createSystemWatchFunctions({
+            const { watchFile, watchDirectory, onPluginConfigurationChanged } = createSystemWatchFunctions({
                 // We dont have polling watch file
                 // it is essentially fsWatch but lets get that separate from fsWatch and
                 // into watchedFiles for easier testing
@@ -405,6 +406,7 @@ interface Array<T> { length: number; [n: number]: T; }`
             });
             this.watchFile = watchFile;
             this.watchDirectory = watchDirectory;
+            this.onPluginConfigurationChanged = onPluginConfigurationChanged;
             this.reloadFS(fileOrFolderorSymLinkList);
         }
 
